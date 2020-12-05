@@ -111,7 +111,12 @@ form.addEventListener('submit', function (e) {
     input.value = ''
 })
 
-button.addEventListener('click', function () {
+const clearButton = document.querySelector('#clear-all')
+
+clearButton.addEventListener('click', function () {
+    // clear local storage and make sure itemsArray variable is also cleared
+    localStorage.clear()
+    itemsArray = []
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild)
     }
