@@ -1,24 +1,28 @@
-const startButton = document.getElementById("start");
-const hiddenElements = document.getElementById("questionSection")
-const questionElement = document.getElementById("question")
-const answerButtonsElement = document.getElementById("answerChoices") 
-const timerEl = document.getElementById("countdown")
-const initialInput = document.getElementById("scoreLog")
-const multipleChoice = document.getElementById("myButtons")
-var timeLeft = 60;
-var endTime; 
-var timeInterval;
-const form = document.querySelector('form');
-const ul = document.querySelector('ul');
-const button = document.querySelector('button');
-const input = document.getElementById('item');
+const startButton = document.getElementById('start');
+const hiddenElements = document.getElementById('questionSection')
+const questionElement = document.getElementById('question')
+const answerButtonsElement = document.getElementById('answerChoices') 
+const timerEl = document.getElementById('countdown')
+const initialInput = document.getElementById('scoreLog')
+const multipleChoice = document.getElementById('myButtons')
+let timeLeft = 60
+let endTime 
+let timeInterval
+const form = document.querySelector('form')
+const ul = document.querySelector('ul')
+const button = document.querySelector('button')
+const input = document.getElementById('item')
+
 let itemsArray = []
+
 if(localStorage.getItem('items')) {
-    items = JSON.parse(localStorage.getItem('items'))
+    // if items exist, override itemsArray with localStorage value
+    itemsArray = JSON.parse(localStorage.getItem('items'))
 } else {
-    items = []
+    // if items don't exist in localStorage, set items to an empty array
+    localStorage.setItem('items', JSON.stringify(itemsArray))
 }
-localStorage.setItem('items', JSON.stringify(itemsArray))
+
 const data = JSON.parse(localStorage.getItem('items'))
 
 const liMaker = (text) => {
@@ -27,28 +31,24 @@ const liMaker = (text) => {
     ul.appendChild(li)
 }
 
-startButton.addEventListener("click", startGame)
-var choiceA = document.getElementById("choiceA")
-var choiceB = document.getElementById("choiceB")
-var choiceC = document.getElementById("choiceC")
-var choiceD = document.getElementById("choiceD")
+startButton.addEventListener('click', startGame)
+let choiceA = document.getElementById('choiceA')
+let choiceB = document.getElementById('choiceB')
+let choiceC = document.getElementById('choiceC')
+let choiceD = document.getElementById('choiceD')
 currentQuestionIndex = 0 
 
 function timer() {
     timeInterval = setInterval(function(timeRunning) {
-      timerEl.textContent = timeLeft;
-      timeLeft--;
-      if (timeLeft <= -1) {clearInterval(timeInterval);
+      timerEl.textContent = timeLeft
+      timeLeft--
+      if (timeLeft <= -1) {clearInterval(timeInterval)
         hiddenElements.classList.add('hide') 
         initialInput.classList.remove('scoreLog')
       }
-    }, 1000);
-  
-
-    
+    }, 1000)
 }
   
-
 function startGame() {
     startButton.classList.add('hide')
     hiddenElements.classList.remove('hide') 
@@ -58,7 +58,6 @@ function startGame() {
 
 function setNextQuestion() {
     showQuestion(currentQuestionIndex)
-
 }
 
 function showQuestion() {
@@ -67,7 +66,7 @@ function showQuestion() {
     choiceB.innerHTML = availableQuestions[currentQuestionIndex].choiceB;
     choiceC.innerHTML = availableQuestions[currentQuestionIndex].choiceC;
     choiceD.innerHTML = availableQuestions[currentQuestionIndex].choiceD; 
-    document.getElementsByClassName("answerChoices")
+    document.getElementsByClassName('answerChoices')
     choiceA.addEventListener('click', selectAnswer)
     choiceB.addEventListener('click', selectAnswer)
     choiceC.addEventListener('click', selectAnswer)
@@ -75,85 +74,77 @@ function showQuestion() {
 }
 
 function selectAnswer (e) {
-    var selectedbutton = e.target.innerHTML;
-    console.log(selectedbutton);
-    console.log(availableQuestions[currentQuestionIndex].correct);
+    let selectedbutton = e.target.innerHTML
     if (selectedbutton != availableQuestions[currentQuestionIndex].correct) {timeLeft -= 10}
-    currentQuestionIndex++; 
-  
+    currentQuestionIndex++
 
     if (currentQuestionIndex <= availableQuestions.length -1) {
         setNextQuestion()
-    }
-
-    else {
+    } else {
         // hide questions and show scoreboard/let user submit score with initials
         hiddenElements.classList.add('hide') 
         initialInput.classList.remove('scoreLog')
-        var endTime = timeLeft; 
-        timeLeft = endTime;
+
+        let endTime = timeLeft
+        timeLeft = endTime
+
         function stopTimer() {
             clearInterval(timeInterval);   
         }
+
         stopTimer()
-        console.log(endTime)
     }
-    
 }
-
-
 
 form.addEventListener('submit', function (e) {
     e.preventDefault()
 
     itemsArray.push(input.value)
     localStorage.setItem('items', JSON.stringify(itemsArray))
-    liMaker(input.value)
+
+    // on submit, render all scores
+    itemsArray.forEach((item) => {
+        liMaker(item)
+    })
+
+    // clear input.value 
     input.value = ''
 })
 
-data.forEach((item) => {
-    liMaker(item)
-})
-
 button.addEventListener('click', function () {
-    localStorage.clear()
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild)
     }
 })
 
-document.getElementsByClassName("answerChoices")
+document.getElementsByClassName('answerChoices')
 
 const availableQuestions = [
     {  
-        question : "Commonly used data types do NOT include:",
-        choiceA : "strings",
-        choiceB : "booleans", 
-        choiceC : "objects",
-        choiceD : "alerts",
-        correct: "alerts",
+        question : 'Commonly used data types do NOT include:',
+        choiceA : 'strings',
+        choiceB : 'booleans', 
+        choiceC : 'objects',
+        choiceD : 'alerts',
+        correct: 'alerts',
 
     }, {
 
-        question : "The condition in an if / else statement is enclosed within ______:",
-        choiceA : "quotes",
-        choiceB : "curly brackets",
-        choiceC : "parenthesis",
-        choiceD : "pizza slices",
-        correct : "curly brackets",
+        question : 'The condition in an if / else statement is enclosed within ______:',
+        choiceA : 'quotes',
+        choiceB : 'curly brackets',
+        choiceC : 'parenthesis',
+        choiceD : 'pizza slices',
+        correct : 'curly brackets',
 
     }, {
 
-        question : "Arrays in JavaScript can be used to store ________:",
-        choiceA : "numbers and strings",
-        choiceB : "other arrays",
-        choiceC : "booleans",
-        choiceD : "all of the above",
-        correct : "all of the above",
+        question : 'Arrays in JavaScript can be used to store ________:',
+        choiceA : 'numbers and strings',
+        choiceB : 'other arrays',
+        choiceC : 'booleans',
+        choiceD : 'all of the above',
+        correct : 'all of the above',
 
     }
-
 ]
-
-

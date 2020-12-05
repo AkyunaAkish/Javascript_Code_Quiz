@@ -39,6 +39,12 @@ margin-bottom: 175px;
 
 #highScores {
     margin-top: 20px;
+    text-align: center;
+}
+
+.scores ul {
+    width: 200px;
+    margin: 0 auto;
 }
 
 #questionSection {
