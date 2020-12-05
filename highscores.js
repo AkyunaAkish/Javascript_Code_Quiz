@@ -18,6 +18,5 @@ const liMaker = (text) => {
 
 // on page load, render all scores for the highscores page
 itemsArray.forEach((item) => {
-    console.log('hi')
     liMaker(item)
 })
